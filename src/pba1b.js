@@ -10,11 +10,20 @@ let mouseDown = false;
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 // Set initial rgb to be random values
-const color = {
-  red: Math.random() * 255,
-  green: Math.random() * 255,
-  blue: Math.random() * 255
-};
+const color = [
+  {
+    value: Math.random() * 255,
+    increment: true
+  },
+  {
+    value: Math.random() * 255,
+    increment: true
+  },
+  {
+    value: Math.random() * 255,
+    increment: true
+  }
+];
 
 function setup() {
   // https://github.com/processing/p5.js/wiki/Beyond-the-canvas
@@ -27,42 +36,48 @@ function setup() {
 }
 
 function rainbow(color) {
-  color.red++;
-  color.blue++;
-  color.green++;
+  // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+  // Iterate over the array of colour values and increment or decrement values
+  color.map(col => {
+    // Determine whether the value should increase or decrease
+    col.increment
+      ? col.value++
+      : col.value--;
 
-  if (color.red >= 255) {
-    color.red = 0;
-  }
-
-  if (color.green >= 255) {
-    color.green = 0;
-  }
-
-  if (color.blue >= 255) {
-    color.blue = 0;
-  }
+    if (col.increment && col.value >= 255) {
+      // Colour has reached maximum value, must decrement
+      col.increment = false;
+    } else if (!col.increment && col.value <= 0) {
+      // Colour has reached minimal value, must increment
+      col.increment = true;
+    }
+  });
 }
 
 function draw() {
+  // Randomise the colour
   rainbow(color);
   noStroke();
 
   if (mouseDown) {
-    fill(color.red, color.green, color.blue);
-  } else {
-    fill(255);
+    // Fill with randomised rgb values and draw ellipse at mouse position
+    fill(color[0].value, color[1].value, color[2].value);
+    ellipse(mouseX, mouseY, 100, 100);
   }
-
-  ellipse(mouseX, mouseY, 100, 100);
 }
 
 // https://p5js.org/reference/#/p5/mousePressed
 function mousePressed() {
   mouseDown = true;
+
+  // Prevent default
+  return false;
 }
 
 // https://p5js.org/reference/#/p5/mouseReleased
 function mouseReleased() {
   mouseDown = false;
+
+  // Prevent default
+  return false;
 }

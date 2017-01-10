@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Fira Mono', monospace;
+  color: #404040;
+  background: #efefef;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  font-weight: 400;
+  text-align: center;
+}
+
+canvas {
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow: 1px 4px 10px 0 #808080;
+}

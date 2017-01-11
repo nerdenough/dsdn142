@@ -20,6 +20,22 @@ class Point {
     };
   }
 
+  calculateOpacity() {
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/abs
+    let x = Math.abs(this.x - mouseX);
+    let y = Math.abs(this.y - mouseY);
+
+    // Ensure value is within limits
+    x = x > 255 ? 255 : x;
+    y = y > 255 ? 255 : y;
+
+    // Calculate average value and determine opacity
+    const value = (255 - (x + y)) / 2;
+    const opacity = value > 10 ? value : 10;
+
+    return opacity;
+  }
+
   drawLine() {
     const threshold = 50;
 
@@ -35,9 +51,12 @@ class Point {
   }
 
   draw() {
+    // Calculate point opacity
+    const opacity = this.calculateOpacity();
+
     // Draw the point
     noStroke();
-    fill(this.color.red, this.color.green, this.color.blue);
+    fill(this.color.red, this.color.green, this.color.blue, opacity);
     ellipse(this.x, this.y, 4, 4);
 
     // Draw a line to the mouse

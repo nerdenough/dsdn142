@@ -6,6 +6,47 @@
  * from Getting Started with Processing by Casey Reas and Ben Fry
  */
 
+class Point {
+  constructor(x, y) {
+    // Scatter coordinates
+    this.x = x + Math.random() * 10;
+    this.y = y + Math.random() * 10;
+
+    // Randomised green tinted colour
+    this.color = {
+      red: Math.random() * 40,
+      green: Math.random() * (200 - 100) + 100,
+      blue: Math.random() * 40
+    };
+  }
+
+  drawLine() {
+    const threshold = 50;
+
+    // Only draw lines to the mouse if they are within a certain threshold
+    // and within the boundaries of the canvas.
+    if (this.x - mouseX <= threshold && this.x - mouseX >= -threshold
+      && this.y - mouseY <= threshold && this.y - mouseY >= -threshold
+      && mouseX > 0 && mouseY > 0 && mouseX < width && mouseY < height) {
+      // Draw a line the same colour as the point
+      stroke(this.color.red, this.color.green, this.color.blue);
+      line(this.x, this.y, mouseX, mouseY);
+    }
+  }
+
+  draw() {
+    // Draw the point
+    noStroke();
+    fill(this.color.red, this.color.green, this.color.blue);
+    ellipse(this.x, this.y, 4, 4);
+
+    // Draw a line to the mouse
+    this.drawLine();
+  }
+}
+
+const points = [];
+
 function setup() {
   // https://github.com/processing/p5.js/wiki/Beyond-the-canvas
   // Injects the canvas into a specific container
@@ -13,25 +54,21 @@ function setup() {
   canvas.parent('canvas');
 
   smooth();
+
+  // Create the grid
+  for (let x = 20; x <= width - 20; x += 20) {
+    for (let y = 20; y <= height - 20; y += 20) {
+      // Create the points
+      const point = new Point(x, y);
+      points.push(point);
+    }
+  }
 }
 
 function draw() {
   // Clears the screen
   clear();
-  background(255);
 
-  fill(0);
-
-  // Create the grid
-  for (let i = 20; i <= width - 20; i += 20) {
-    for (let j = 20; j <= height - 20; j += 20) {
-      // Calculate where to draw the line
-      const lineX = width / 2 + (mouseX - width / 2);
-      const lineY = width / 2 + (mouseY - height / 2);
-
-      // Draw the point and line
-      ellipse(i, j, 2, 2);
-      line(i, j, lineX, lineY);
-    }
-  }
+  // Draw the points
+  points.map(point => point.draw());
 }

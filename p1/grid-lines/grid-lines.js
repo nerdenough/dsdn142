@@ -17,10 +17,18 @@ function setup() {
 }
 
 function draw() {
-  for (let x = 0; x <= width; x+= 14) {
-    for (let y = 0; y <= height; y += 14) {
-      line(x, y, x + 10, y + 10);
-      line(x, y + 10, x + 10, y);
+  const dist = 20;
+
+  for (let x = 0; x <= width; x += dist) {
+    for (let y = 0; y <= height; y += dist) {
+      line(x, y, x + dist, y);
+      line(x, y, x, y + dist);
+
+      if (x / 20 % 2 === 0) {
+        line(x, y, x + dist, y + dist);
+      } else {
+        line(x, y + dist, x + dist, y);
+      }
     }
   }
 }

@@ -5,54 +5,37 @@
  * Based on the Project 1 "Lines Open" template by Birgit Bachler
  */
 
-const numPoints = 24;
-const points = [];
 const lines = [];
 
-function shortestPath() {
-  const path = [];
-  const visited = [];
-  let unvisited = points.slice(0);
+function calcPoints(x1, y1, x2, y2) {
+  const numVertex = Math.random() * (20 - 10) + 10;
+  let distX = x2 - x1;
+  let distY = y1 - y2;
 
-  points.map(p => {
-    let shortest;
+  const line = [];
+  line.push({ x: x1, y: y1 });
+  for (let i = 0; i < numVertex; i++) {
+    const x = Math.random() * (distX / 4) + (distX / 4);
+    const y = Math.random() * (distY / 4) + (distY / 4);
+    distX += x;
+    distY -= y;
 
-    unvisited.map(u => {
-      if (p !== u) {
-        if (!shortest) {
-          shortest = u;
-        }
-
-        const lenX = Math.abs(p.x - u.x);
-        const lenY = Math.abs(p.y - u.y);
-
-        if (lenX < shortest.x && lenY < shortest.y) {
-          shortest = u;
-        }
-      }
-    });
-
-    if (shortest) {
-      lines.push({
-        x1: p.x,
-        y1: p.y,
-        x2: shortest.x,
-        y2: shortest.y
-      });
-    }
-
-    const index = unvisited.indexOf(shortest);
-    unvisited.splice(index, 1);
-  });
+    line.push({ x, y });
+  }
+  line.push({ x: x2, y: y2 });
+  lines.push(line);
 }
 
-function createPoints() {
-  for (let i = 0; i < numPoints; i++) {
-    const x = Math.random() * (width - 100) + 50;
-    const y = Math.random() * (height - 100) + 50;
-
-    points.push({ x, y });
-  }
+function drawLines() {
+  lines.map(l => {
+    beginShape();
+    for (let i = 0; i < l.length - 1; i++) {
+      const v1 = l[i];
+      const v2 = l[i + 1];
+      line(v1.x, v1.y, v2.x, v2.y);
+    }
+    endShape();
+  });
 }
 
 function setup() {
@@ -61,18 +44,16 @@ function setup() {
   canvas.parent('canvas');
   smooth();
 
-  createPoints();
-  shortestPath();
+  for (let i = 0; i < 800; i++) {
+    const x1 = Math.random() * 600 - 300;
+    calcPoints(x1, height, width, 0);
+  }
 }
 
 function draw() {
   clear();
   background(255);
+  stroke(116, 187, 232, 50);
 
-  // Draw base isometric grid
-  stroke(0);
-  strokeWeight(5);
-  beginShape();
-  points.map(p => curveVertex(p.x, p.y));
-  endShape();
+  drawLines();
 }

@@ -5,35 +5,33 @@
  * Based on the Project 1 "Lines Grid" template by Birgit Bachler
  */
 
+const grid = [];
+const tileSize = 32;
+
 function setup() {
   // Injects the canvas into a specific container
   const canvas = createCanvas(600, 600);
   canvas.parent('canvas');
 
-  background(0);
+  background(255);
   smooth();
+
+  // Create the grid
+  for (let y = 0; y <= height / tileSize; y++) {
+    for (let x = 0; x <= width / tileSize; x++) {
+      grid.push({ x, y });
+    }
+  }
 }
 
 function draw() {
-  // Distance between grid points
-  const dist = 20;
+  stroke('#97cff2');
+  grid.map(cell => {
+    // http://clintbellanger.net/articles/isometric_math/
+    // Make the grid isometric
+    const screenX = (cell.x - cell.y) * (tileSize / 2) + width / 2;
+    const screenY = (cell.x + cell.y) * (tileSize / 2) + height / 2;
 
-  // Create grid
-  for (let x = 0; x <= width; x += dist) {
-    for (let y = 0; y <= height; y += dist) {
-      // Calculate how far through the page the point is
-      const percent = y / height * 100;
-
-      // Set a random colour for the line based on the height
-      const color = 255 - (percent / 100 * 255);
-      stroke(Math.random() * 255, color, Math.random() * 255);
-
-      // Draw alternating diagonals to create an arrow effect
-      if (x / 20 % 2 === 0) {
-        line(x, y, x + dist, y + dist);
-      } else {
-        line(x, y + dist, x + dist, y);
-      }
-    }
-  }
+    ellipse(screenX, screenY / 2, 4, 4);
+  });
 }

@@ -5,32 +5,20 @@
  * Based on the Project 1 "Lines Grid" template by Birgit Bachler
  */
 
-const grid = [];
+// Lines to be drawn along the horizontal and vertical axis of the isometric
+// grid.
+const xLines = [];
+const yLines = [];
 const tileSize = 64;
 
-function setup() {
-  // Injects the canvas into a specific container
-  const canvas = createCanvas(600, 600);
-  canvas.parent('canvas');
-
-  smooth();
-
-  // Create the grid
-  for (let y = 0; y <= height / tileSize; y++) {
-    const cols = [];
-    for (let x = 0; x <= width / tileSize; x++) {
-      cols.push({ x, y });
-    }
-    grid.push(cols);
-  }
-}
-
-function draw() {
-  clear();
-  background(255);
-  stroke('#97cff2');
-
-  // Draw grid lines from the x-axis
+/**
+ * Calculates the horizontal line locations for for an isometric grid. The lines
+ * are built upon an initial grid and a tile size to determine their location
+ * on screen.
+ *
+ * @param {Array} grid - The initial grid to build upon.
+ */
+function calculateXLines(grid) {
   grid[0].map((point, index) => {
     // http://clintbellanger.net/articles/isometric_math/
     // Calculate location for lines on screen
@@ -41,10 +29,21 @@ function draw() {
     const screenDestX = (destX - destY) * (tileSize / 2) + width / 2;
     const screenDestY = (destX + destY) * (tileSize / 2) + height / 2;
 
-    line(screenX, screenY / 2, screenDestX, screenDestY / 2);
+    xLines.push({
+      start: { x: screenX, y: screenY / 2 },
+      end: { x: screenDestX, y: screenDestY / 2 }
+    });
   });
+}
 
-  // Draw grid lines from the y-axis
+/**
+ * Calculates the vertical line locations for for an isometric grid. The lines
+ * are built upon an initial grid and a tile size to determine their location
+ * on screen.
+ *
+ * @param {Array} grid - The initial grid to build upon.
+ */
+function calculateYLines(grid) {
   grid.map((col, index) => {
     const point = col[0];
 
@@ -57,6 +56,51 @@ function draw() {
     const screenDestX = (destX - destY) * (tileSize / 2) + width / 2;
     const screenDestY = (destX + destY) * (tileSize / 2) + height / 2;
 
-    line(screenX, screenY / 2, screenDestX, screenDestY / 2);
+    yLines.push({
+      start: { x: screenX, y: screenY / 2 },
+      end: { x: screenDestX, y: screenDestY / 2 }
+    });
   });
+}
+
+/**
+ * Constructs an initial grid based on the canvas size and specified tile size.
+ * The grid, stored as a 2D array, contains objects which store the x and y
+ * indexes of each of the points.
+ *
+ * @returns {Array} Initial grid.
+ */
+function createGrid() {
+  const grid = [];
+
+  for (let y = 0; y <= height / tileSize; y++) {
+    const cols = [];
+    for (let x = 0; x <= width / tileSize; x++) {
+      cols.push({ x, y });
+    }
+    grid.push(cols);
+  }
+
+  return grid;
+}
+
+function setup() {
+  // Injects the canvas into a specific container
+  const canvas = createCanvas(600, 600);
+  canvas.parent('canvas');
+  smooth();
+
+  const grid = createGrid();
+  calculateXLines(grid);
+  calculateYLines(grid);
+}
+
+function draw() {
+  clear();
+  background(255);
+
+  // Draw base isometric grid
+  stroke('#97cff2');
+  xLines.map(l => line(l.start.x, l.start.y, l.end.x, l.end.y));
+  yLines.map(l => line(l.start.x, l.start.y, l.end.x, l.end.y));
 }

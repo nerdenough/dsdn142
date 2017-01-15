@@ -9,7 +9,7 @@
 const xspacing = 8;
 const period = 600.0;
 const waves = [];
-const waveCount = 8;
+const waveCount = 20;
 let theta = 0.0;
 let w;
 let length;
@@ -20,7 +20,7 @@ let length;
  */
 function calcWaves() {
   // Calculate a random amplitude
-  const amplitude = Math.random() * (160.0 - 150.0) + 150.0;
+  const amplitude = Math.random() * (170.0 - 150.0) + 150.0;
   const yvalues = [];
 
   // Displace each repeating graph on the x-axis slightly
@@ -44,10 +44,14 @@ function calcWaves() {
  */
 function renderWaves(yOffset) {
   // Iterate over the waves to get the y-values
-  waves.map(yvalues => {
+  waves.map((yvalues, i) => {
+    i % 2 === 0
+      ? stroke(116, 187, 232, 200)
+      : stroke(242, 116, 160, 100);
+
     beginShape();
     // Iterate over the y-values to create a vertex at each point
-    yvalues.map((val, i) => vertex(i * xspacing, height / 2 + val + yOffset));
+    yvalues.map((val, j) => vertex(j * xspacing, height / 2 + val + yOffset));
     endShape();
   });
 }
@@ -60,13 +64,14 @@ function renderWaves(yOffset) {
  */
 function renderConnectingLines(off1, off2) {
   for (let i = 0; i < waves[0].length; i += 4) {
-    line(i * xspacing, height / 2 + waves[0][i] + off1, i * xspacing, height / 2 + waves[0][i] + off2);
-    line(i * xspacing, height / 2 + waves[0][i] + off1, (i + 1) * xspacing, height / 2 + waves[0][i + 1] + off2);
-    line(i * xspacing, height / 2 + waves[0][i] + off1, (i + 2) * xspacing, height / 2 + waves[0][i + 2] + off2);
-    line(i * xspacing, height / 2 + waves[0][i] + off1, (i + 3) * xspacing, height / 2 + waves[0][i + 3] + off2);
-    line(i * xspacing, height / 2 + waves[0][i] + off1, (i - 1) * xspacing, height / 2 + waves[0][i - 1] + off2);
-    line(i * xspacing, height / 2 + waves[0][i] + off1, (i - 2) * xspacing, height / 2 + waves[0][i - 2] + off2);
-    line(i * xspacing, height / 2 + waves[0][i] + off1, (i - 3) * xspacing, height / 2 + waves[0][i - 3] + off2);
+    for (let j = 0; j < 5; j++) {
+      j % 2 === 0
+        ? stroke(242, 116, 160, 60)
+        : stroke(116, 187, 232, 160);
+
+      line(i * xspacing, height / 2 + waves[0][i] + off1, (i - j) * xspacing, height / 2 + waves[0][i - j] + off2);
+      line(i * xspacing, height / 2 + waves[0][i] + off1, (i + j) * xspacing, height / 2 + waves[0][i + j] + off2);
+    }
   }
 }
 
@@ -90,11 +95,10 @@ function setup() {
 function draw() {
   clear();
   background(255);
-  stroke(116, 187, 232, 100);
   noFill();
 
   // Render the waves with their connecting lines
+  renderConnectingLines(100, -100);
   renderWaves(-100);
   renderWaves(100);
-  renderConnectingLines(100, -100);
 }

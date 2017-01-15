@@ -7,34 +7,32 @@
 
 const lines = [];
 
-function calcPoints(x1, y1, x2, y2) {
-  const numVertex = Math.random() * (20 - 10) + 10;
-  let distX = x2 - x1;
-  let distY = y1 - y2;
+/**
+ * Creates the lines by alternating the start points and generating random
+ * endpoints.
+ *
+ * @param {Number} numLines - Number of lines to create
+ */
+function createLines(numLines) {
+  for (let i = 0; i < 5000; i++) {
+    // Generate random start and end points
+    const y1 = Math.random() * height;
+    const yOffset = Math.random() * 40;
+    const x2 = Math.random() * (width / 2);
 
-  const line = [];
-  line.push({ x: x1, y: y1 });
-  for (let i = 0; i < numVertex; i++) {
-    const x = Math.random() * (distX / 4) + (distX / 4);
-    const y = Math.random() * (distY / 4) + (distY / 4);
-    distX += x;
-    distY -= y;
-
-    line.push({ x, y });
+    // Alternative the side the line starts from
+    i % 2 === 0
+      ? lines.push({ x1: 0, y1, x2, y2: y1 + yOffset })
+      : lines.push({ x1: width, y1, x2: width - x2, y2: y1 + yOffset });
   }
-  line.push({ x: x2, y: y2 });
-  lines.push(line);
 }
 
+/**
+ * Draws the lines to the screen by iterating over the lines array.
+ */
 function drawLines() {
   lines.map(l => {
-    beginShape();
-    for (let i = 0; i < l.length - 1; i++) {
-      const v1 = l[i];
-      const v2 = l[i + 1];
-      line(v1.x, v1.y, v2.x, v2.y);
-    }
-    endShape();
+    line(l.x1, l.y1, l.x2, l.y2);
   });
 }
 
@@ -43,17 +41,12 @@ function setup() {
   const canvas = createCanvas(600, 600);
   canvas.parent('canvas');
   smooth();
-
-  for (let i = 0; i < 800; i++) {
-    const x1 = Math.random() * 600 - 300;
-    calcPoints(x1, height, width, 0);
-  }
+  createLines(5000);
 }
 
 function draw() {
   clear();
   background(255);
   stroke(116, 187, 232, 50);
-
   drawLines();
 }

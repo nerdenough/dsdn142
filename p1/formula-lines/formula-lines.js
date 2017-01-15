@@ -90,7 +90,7 @@ function setup() {
 function draw() {
   clear();
   background(255);
-  stroke('#88b9f2');
+  stroke(116, 187, 232, 100);
   noFill();
 
   // Render the waves with their connecting lines

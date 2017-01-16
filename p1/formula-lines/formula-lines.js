@@ -85,7 +85,7 @@ function draw() {
   clear();
   background(255);
   noFill();
-  stroke(0, 0, 0, 20);
+  stroke(0, 0, 0, 30);
 
   // Render the waves with their connecting lines
   for (let i = 0; i < 100; i++) {

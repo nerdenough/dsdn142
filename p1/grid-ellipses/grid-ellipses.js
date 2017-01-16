@@ -1,25 +1,39 @@
 /**
  * Brendan Goodenough
  * Project 1 - Grid Ellipses
+ *
+ * Based on 'Grid Lines' by Brendan Goodenough
  */
 
+const lengths = [];
+
+/**
+ * Generates random lengths to be used by each point in the grid for variation.
+ */
+function generateLengths() {
+  for (let y = 0; y <= height; y += 50) {
+    for (let x = 0; x <= width; x += 50) {
+      lengths.push(Math.random() * 100);
+    }
+  }
+}
+
+/**
+ * Draws the grid.
+ */
 function drawGrid() {
-  let x = 0;
-  let y = 0;
-  let w = 0;
-  for (let i = 0; y <= height; i++) {
-    y += 2 * w;
-    w += 1;
-    for (let j = 0; j * 50 <= width; j++) {
-      const ww = 0.5 * w;
-      x = j * 50;
+  let j = 0;
+  for (let y = 0; y <= height; y += 50) {
+    for (let x = 0; x <= width; x += 50) {
+      const length = lengths[j];
 
-      fill('#6163eb');
-      ellipse(x - 0.8 * ww, y - 0.8 * ww, ww, ww);
-      ellipse(x + 0.8 * ww, y - 0.8 * ww, ww, ww);
-
-      fill('#494bec');
-      ellipse(x, y, w);
+      // Draws ellipses based on the randomly generated lengths
+      for (let i = 0; i <= length; i++) {
+        ellipse(x, y, 40 - i);
+        ellipse(x, y, i + 5);
+        ellipse(x, y, i + 10);
+      }
+      j++;
     }
   }
 }
@@ -29,12 +43,15 @@ function setup() {
   const canvas = createCanvas(600, 600);
   canvas.parent('canvas');
   smooth();
+
+  generateLengths();
 }
 
 function draw() {
   clear();
-  background('#2d2eb3');
+  background(255);
+  stroke(0, 0, 0, 20);
+  noFill();
 
-  noStroke();
   drawGrid();
 }

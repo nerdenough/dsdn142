@@ -3,6 +3,11 @@
  * Project 1 - Formula Ellipses
  */
 
+/**
+ * Run the formula on the index.
+ *
+ * @param {Number} i - Number to divide by 2pi
+ */
 function formula(i) {
   return TWO_PI / i;
 }
@@ -17,20 +22,21 @@ function setup() {
 function draw() {
   clear();
   background(255);
-  stroke(0, 0, 0, 40);
-  strokeWeight(1);
   noFill();
 
+  stroke(0, 0, 0, 10);
+  strokeWeight(1);
+
+  // https://p5js.org/reference/#/p5/translate
   translate(width / 2, height / 2);
 
-  let w = 500;
-  for (let i = 0; i <= 100; i++) {
+  // Draw 1000 ellipses at different angles
+  for (let i = 0; i <= 1000; i++) {
+    // https://p5js.org/reference/#/p5/rotate
     const theta = formula(i);
-
-    if (theta > HALF_PI) {
-    }
-
     rotate(theta);
-    ellipse(20, 20, w, 100);
+
+    // Displace the ellipse to create discs
+    ellipse(20, 20, 500, 100);
   }
 }

@@ -9,7 +9,7 @@
 const xspacing = 8;
 const period = 600.0;
 const waves = [];
-const waveCount = 20;
+const waveCount = 1;
 let theta = 0.0;
 let w;
 let length;
@@ -45,10 +45,6 @@ function calcWaves() {
 function renderWaves(yOffset) {
   // Iterate over the waves to get the y-values
   waves.map((yvalues, i) => {
-    i % 2 === 0
-      ? stroke(116, 187, 232, 200)
-      : stroke(242, 116, 160, 100);
-
     beginShape();
     // Iterate over the y-values to create a vertex at each point
     yvalues.map((val, j) => vertex(j * xspacing, height / 2 + val + yOffset));
@@ -63,15 +59,8 @@ function renderWaves(yOffset) {
  * @param {Number} off2 - Offset of the lower graphs.
  */
 function renderConnectingLines(off1, off2) {
-  for (let i = 0; i < waves[0].length; i += 4) {
-    for (let j = 0; j < 5; j++) {
-      j % 2 === 0
-        ? stroke(242, 116, 160, 60)
-        : stroke(116, 187, 232, 160);
-
-      line(i * xspacing, height / 2 + waves[0][i] + off1, (i - j) * xspacing, height / 2 + waves[0][i - j] + off2);
-      line(i * xspacing, height / 2 + waves[0][i] + off1, (i + j) * xspacing, height / 2 + waves[0][i + j] + off2);
-    }
+  for (let i = 0; i < waves[0].length; i++) {
+    line((i - 1) * xspacing, height / 2 + waves[0][i - 1] + off1, i * xspacing, height / 2 + waves[0][i] + off2);
   }
 }
 
@@ -96,9 +85,11 @@ function draw() {
   clear();
   background(255);
   noFill();
+  stroke(0, 0, 0, 20);
 
   // Render the waves with their connecting lines
-  renderConnectingLines(100, -100);
-  renderWaves(-100);
-  renderWaves(100);
+  for (let i = 0; i < 100; i++) {
+    renderWaves((i * -1) + 100);
+    renderConnectingLines(i * -10, (i + 1) * -10);
+  }
 }

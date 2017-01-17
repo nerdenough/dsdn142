@@ -1,6 +1,6 @@
 /**
  * Brendan Goodenough
- * Project 1 - Formula Ellipses
+ * Project 1 - Ellipses Open
  */
 
 /**
@@ -23,15 +23,6 @@ function polygon(x, y, radius, npoints) {
   endShape(CLOSE);
 }
 
-/**
- * Run the formula on the index.
- *
- * @param {Number} i - Number to divide by 2pi
- */
-function formula(i) {
-  return TWO_PI / i;
-}
-
 function setup() {
   // Injects the canvas into a specific container
   const canvas = createCanvas(600, 600);
@@ -49,21 +40,11 @@ function draw() {
   // https://p5js.org/reference/#/p5/translate
   translate(width / 2, height / 2);
 
-  for (let i = 0; i < 25; i++) {
-    rotate(0);
-    polygon(i, i, 50, 3);
-    rotate(HALF_PI);
-    polygon(i, i, 50, 3);
-    rotate(PI);
-    polygon(i, i, 50, 3);
-    rotate(HALF_PI + PI);
-    polygon(i, i, 50, 3);
-  }
-
-  for (let i = 0; i < 25; i++) {
-    rotate(PI);
-    polygon(i, i, 150, 6);
-    polygon(i, i, 200, 6);
-    polygon(i, i, 250, 6);
+  // Draw 100 hexagons at different positions, rotating by 1 each time
+  for (let i = 0; i < 100; i++) {
+    rotate(1);
+    polygon(0, 0, 80 + i, 6);
+    polygon(0, 0, 120 + i, 6);
+    polygon(0, 0, 160 + i, 6);
   }
 }

@@ -32,10 +32,6 @@ function createLines(numLines) {
  */
 function drawLines() {
   lines.map((l, i) => {
-    i % 2 === 0
-      ? stroke(116, 187, 232, 50)
-      : stroke(242, 116, 160, 50);
-
     line(l.x1, l.y1, l.x2, l.y2);
   });
 }
@@ -51,6 +47,6 @@ function setup() {
 function draw() {
   clear();
   background(255);
-  stroke(116, 187, 232, 50);
+  stroke(0, 0, 0, 20);
   drawLines();
 }

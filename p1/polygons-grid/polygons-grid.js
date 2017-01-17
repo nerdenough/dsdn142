@@ -58,7 +58,7 @@ function draw() {
   clear();
   background(255);
   noFill();
-  stroke(0, 0, 0, 60);
+  stroke(0, 0, 0, 100);
 
   drawGrid();
 }

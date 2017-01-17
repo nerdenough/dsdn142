@@ -1,6 +1,6 @@
 /**
  * Brendan Goodenough
- * Project 1 - Grid Ellipses
+ * Project 1 - Ellipses Grid
  *
  * Based on 'Grid Lines' by Brendan Goodenough
  */

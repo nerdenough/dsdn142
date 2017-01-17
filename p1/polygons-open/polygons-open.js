@@ -40,6 +40,7 @@ function draw() {
   // https://p5js.org/reference/#/p5/translate
   translate(width / 2, height / 2);
 
+  // Draw triangles rotated by multiples of PI, increasing the offset with each iteration
   for (let i = 0; i < 100; i++) {
     rotate(0);
     polygon(i, i, 200, 3);

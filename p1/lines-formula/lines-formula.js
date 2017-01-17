@@ -1,6 +1,6 @@
 /**
  * Brendan Goodenough
- * Project 1 - Formula Lines
+ * Project 1 - Lines Formula
  *
  * Based on 'Sine Wave' by Danial Shiffman
  * from https://p5js.org/examples/math-sine-wave.html

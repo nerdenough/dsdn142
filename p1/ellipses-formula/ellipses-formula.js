@@ -1,6 +1,6 @@
 /**
  * Brendan Goodenough
- * Project 1 - Formula Ellipses
+ * Project 1 - Ellipses Formula
  */
 
 /**

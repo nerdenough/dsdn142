@@ -1,6 +1,6 @@
 /**
  * Brendan Goodenough
- * Project 1 - Grids and Lines
+ * Project 1 - Lines Grid
  *
  * Based on the Project 1 "Lines Grid" template by Birgit Bachler
  */

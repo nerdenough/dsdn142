@@ -26,10 +26,12 @@ function draw() {
 
   stroke(0, 0, 0, 80);
 
+  // Draw the ellipses on the grid
   for (let i = 0; i < points.length; i++) {
     const p = points[i];
     ellipse(p.x, p.y, p.r);
 
+    // If odd, shade the ellipse with increasingly smaller ellipses
     if (i % 2 === 0) {
       for (let j = p.r; j > 3; j -= 3) {
         ellipse(p.x, p.y, p.r - (p.r - j));

@@ -1,6 +1,6 @@
 /**
  * Brendan Goodenough
- * Project 1 - Free Lines
+ * Project 1 - Lines Open
  *
  * Based on the Project 1 "Lines Open" template by Birgit Bachler
  */

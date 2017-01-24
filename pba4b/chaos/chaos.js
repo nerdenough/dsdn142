@@ -22,10 +22,12 @@ function setup() {
   textSize(64);
   textStyle(BOLD);
 
+  // Random number of words
   const n = Math.random() * (20 - 10) + 10;
 
-  // Write words in a grid
+  // Draw words
   for (let i = 0; i < n; i++) {
+    // Random coordinates
     const x = Math.random() * (width - 300) + 50;
     const y = Math.random() * (height - 50) + 50;
 

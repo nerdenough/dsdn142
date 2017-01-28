@@ -3,6 +3,8 @@
  * PBA6b
  */
 
+const bg = Math.random() > 0.5 ? '#000000' : '#ffffff';
+
 function setup() {
   // https://github.com/processing/p5.js/wiki/Beyond-the-canvas
   // Injects the canvas into a specific container
@@ -10,5 +12,5 @@ function setup() {
   canvas.parent('canvas');
 
   smooth();
-  background(255);
+  background(bg);
 }

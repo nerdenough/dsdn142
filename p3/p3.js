@@ -26,13 +26,13 @@ function createPendulums() {
   return [1, 2, 3, 4, 5].map((item, i) => ({
     loc: {
       x: 375 + (i * 150) - 30,
-      y: height - 200,
+      y: height / 2 + 100,
     },
     rot: 0,
     col: {
-      r: Math.random() * 255,
-      g: Math.random() * 255,
-      b: Math.random() * 255
+      r: 0,
+      g: 200,
+      b: 255
     }
   }));
 }
@@ -54,9 +54,12 @@ function draw() {
   strokeWeight(5);
 
   pendulums.map((pendulum, i) => {
+    stroke(pendulum.col.r, pendulum.col.g - 50, pendulum.col.b - 50);
     fill(pendulum.col.r, pendulum.col.g, pendulum.col.b);
     line(pendulum.loc.x, 0, pendulum.loc.x, pendulum.loc.y);
     ellipse(pendulum.loc.x, pendulum.loc.y, 150, 150);
+    fill(255);
+    ellipse(pendulum.loc.x + 25, pendulum.loc.y - 25, 50, 50);
   });
 }
 

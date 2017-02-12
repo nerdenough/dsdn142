@@ -50,8 +50,12 @@ function setup() {
 function draw() {
   clear();
   background(255);
+  strokeWeight(5);
 
-  balls.map(ball => ellipse(ball.x, ball.y, 100, 100));
+  balls.map((ball) => {
+    line(ball.x, 0, ball.x, ball.y);
+    ellipse(ball.x, ball.y, 150, 150);
+  });
 }
 
 function mouseClicked() {

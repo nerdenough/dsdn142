@@ -31,7 +31,7 @@ function createPendulums() {
     rot: 0,
     col: {
       r: 0,
-      g: 200,
+      g: 160,
       b: 255
     }
   }));
@@ -48,18 +48,40 @@ function setup() {
   smooth();
 }
 
+function drawIris(pendulum, i = 0) {
+  const total = 40;
+  if (i >= total) {
+    return;
+  }
+
+  // https://p5js.org/reference/#/p5/push
+  push();
+  translate(pendulum.loc.x, pendulum.loc.y);
+  rotate(1 / total * i * TWO_PI);
+  translate(20, 0);
+  ellipse(0, 0, 30, 5);
+  pop();
+
+  return drawIris(pendulum, i + 1);
+}
+
 function draw() {
   clear();
   background(255);
   strokeWeight(5);
 
   pendulums.map((pendulum, i) => {
-    stroke(pendulum.col.r, pendulum.col.g - 50, pendulum.col.b - 50);
-    fill(pendulum.col.r, pendulum.col.g, pendulum.col.b);
+    fill(255);
+    stroke(0);
     line(pendulum.loc.x, 0, pendulum.loc.x, pendulum.loc.y);
     ellipse(pendulum.loc.x, pendulum.loc.y, 150, 150);
-    fill(255);
-    ellipse(pendulum.loc.x + 25, pendulum.loc.y - 25, 50, 50);
+
+    noStroke();
+    fill(0);
+    ellipse(pendulum.loc.x, pendulum.loc.y, 60);
+
+    fill(pendulum.col.r, pendulum.col.g, pendulum.col.b, 150);
+    drawIris(pendulum);
   });
 }
 

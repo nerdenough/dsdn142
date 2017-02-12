@@ -13,6 +13,18 @@
 
 let pendulums = [];
 
+function createEye(x, y) {
+  return {
+    loc: { x, y },
+    rot: 0,
+    col: {
+      r: 0,
+      g: 160,
+      b: 255
+    }
+  };
+}
+
 /**
  * Initialises the cradle by creating the five pendulums. Determines the x and
  * y locations of each pendulum and randomises its initial colour.
@@ -49,7 +61,7 @@ function setup() {
 }
 
 function drawIris(pendulum, i = 0) {
-  const total = 40;
+  const total = 60;
   if (i >= total) {
     return;
   }
@@ -58,7 +70,7 @@ function drawIris(pendulum, i = 0) {
   push();
   translate(pendulum.loc.x, pendulum.loc.y);
   rotate(1 / total * i * TWO_PI);
-  translate(20, 0);
+  translate(30, 0);
   ellipse(0, 0, 30, 5);
   pop();
 
@@ -67,8 +79,7 @@ function drawIris(pendulum, i = 0) {
 
 function draw() {
   clear();
-  background(255);
-  strokeWeight(5);
+  background(0);
 
   pendulums.map((pendulum, i) => {
     fill(255);
@@ -77,11 +88,13 @@ function draw() {
     ellipse(pendulum.loc.x, pendulum.loc.y, 150, 150);
 
     noStroke();
-    fill(0);
-    ellipse(pendulum.loc.x, pendulum.loc.y, 60);
+    noFill();
 
-    fill(pendulum.col.r, pendulum.col.g, pendulum.col.b, 150);
+    stroke(pendulum.col.r, pendulum.col.g, pendulum.col.b, 150);
+    strokeWeight(1);
     drawIris(pendulum);
+    fill(0);
+    ellipse(pendulum.loc.x, pendulum.loc.y, 30);
   });
 }
 

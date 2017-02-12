@@ -32,14 +32,22 @@ function setup() {
   smooth();
 }
 
+function drawPupil(eye) {
+  const x = mouseX > eye.loc.x ? 10 : -10;
+  const y = mouseY > eye.loc.y ? 10 : -10;
+  fill(0);
+  ellipse(x, y, 30, 25);
+}
+
 function drawEye(eye) {
+  push();
+  translate(eye.loc.x, eye.loc.y);
   fill(0);
-  stroke(0);
-  ellipse(eye.loc.x, eye.loc.y, 150);
+  ellipse(0, 0, 150);
   fill(255);
-  ellipse(eye.loc.x, eye.loc.y, 150, 80);
-  fill(0);
-  ellipse(eye.loc.x, eye.loc.y, 30, 25);
+  ellipse(0, 0, 150, 80);
+  drawPupil(eye);
+  pop();
 }
 
 function draw() {

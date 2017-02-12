@@ -32,11 +32,22 @@ function setup() {
   smooth();
 }
 
+function calcDist(a, b) {
+  return Math.abs(a - b);
+}
+
 function drawPupil(eye) {
-  const x = mouseX > eye.loc.x ? 10 : -10;
-  const y = mouseY > eye.loc.y ? 10 : -10;
+  const x = eye.loc.x;
+  const y = eye.loc.y;
+
+  // https://p5js.org/reference/#/p5/atan2
+  const theta = atan2(mouseY - y, mouseX - x);
+
+  rotate(theta);
+  translate(20, 0);
+
   fill(0);
-  ellipse(x, y, 30, 25);
+  ellipse(0, 0, 30);
 }
 
 function drawEye(eye) {

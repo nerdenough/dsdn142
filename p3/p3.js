@@ -14,7 +14,8 @@
 let pendulums = [];
 
 /**
- * Initialises the cradle by creating the five pendulums.
+ * Initialises the cradle by creating the five pendulums. Determines the x and
+ * y locations of each pendulum and randomises its initial colour.
  *
  * @returns {Array} The newly created pendulums.
  */
@@ -23,8 +24,16 @@ function createPendulums() {
   // values. I'm gonna assume there's a better way to do this without using a
   // for loop, but this does the trick.
   return [1, 2, 3, 4, 5].map((item, i) => ({
-    x: 375 + (i * 150) - 30,
-    y: height - 200
+    loc: {
+      x: 375 + (i * 150) - 30,
+      y: height - 200,
+    },
+    rot: 0,
+    col: {
+      r: Math.random() * 255,
+      g: Math.random() * 255,
+      b: Math.random() * 255
+    }
   }));
 }
 
@@ -44,9 +53,10 @@ function draw() {
   background(255);
   strokeWeight(5);
 
-  pendulums.map((pendulum) => {
-    line(pendulum.x, 0, pendulum.x, pendulum.y);
-    ellipse(pendulum.x, pendulum.y, 150, 150);
+  pendulums.map((pendulum, i) => {
+    fill(pendulum.col.r, pendulum.col.g, pendulum.col.b);
+    line(pendulum.loc.x, 0, pendulum.loc.x, pendulum.loc.y);
+    ellipse(pendulum.loc.x, pendulum.loc.y, 150, 150);
   });
 }
 

@@ -11,7 +11,8 @@ function createEye(x, y) {
     x,
     y,
     theta: 0,
-    size: 150
+    size: 150,
+    eyelidHeight: 80
   };
 }
 
@@ -46,10 +47,10 @@ function drawPupil(eye) {
 }
 
 function drawEyelid(eye) {
-  fill(0);
+  fill('#8f3131');
   ellipse(0, 0, 150);
   fill(255);
-  ellipse(0, 0, 150, 80);
+  ellipse(0, 0, 150, eye.eyelidHeight);
 }
 
 function drawEye(eye) {
@@ -70,9 +71,22 @@ function checkBounds(eye) {
   return x1 && x2 && y1 && y2;
 }
 
+function closeEye(eye) {
+  if (eye.eyelidHeight > 0) {
+    eye.eyelidHeight = eye.eyelidHeight < 0 ? 0 : eye.eyelidHeight - 20;
+  }
+}
+
+function openEye(eye) {
+  if (eye.eyelidHeight <= 80) {
+    eye.eyelidHeight = eye.eyelidHeight > 80 ? 80 : eye.eyelidHeight + 20;
+  }
+}
+
 function draw() {
   clear();
   background('#fb5d5d');
+  noStroke();
 
   drawEye(leftEye);
   drawEye(rightEye);
@@ -80,5 +94,11 @@ function draw() {
   if (mouseIsPressed) {
     const leftEyePressed = checkBounds(leftEye);
     const rightEyePressed = checkBounds(rightEye);
+
+    leftEyePressed && closeEye(leftEye);
+    rightEyePressed && closeEye(rightEye);
+  } else {
+    openEye(leftEye);
+    openEye(rightEye);
   }
 }

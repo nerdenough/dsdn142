@@ -5,6 +5,7 @@
 
 let leftEye;
 let rightEye;
+let body;
 
 function createEye(x, y) {
   return {
@@ -24,6 +25,11 @@ function setup() {
 
   leftEye = createEye(width / 2 - 200, height / 2 - 100);
   rightEye = createEye(width / 2 + 200, height / 2 - 100);
+
+  body = {
+    x: 0,
+    y: 0
+  };
 
   smooth();
 }
@@ -54,8 +60,12 @@ function drawEyelid(eye) {
 }
 
 function drawEye(eye) {
+  const scaleX = eye.x < width / 2 ? 1 + (body.x / 100) / 2 : 1 - (body.x / 100) / 2;
+  const scaleY = eye.x < width / 2 ? 1 + (body.x / 100) / 5 : 1 - (body.x / 100) / 5;
+
   push();
-  translate(eye.x, eye.y);
+  translate(eye.x + body.x, eye.y + body.y);
+  scale(scaleX, scaleY);
   drawEyelid(eye);
   drawPupil(eye);
   pop();
@@ -88,6 +98,16 @@ function draw() {
   background('#fb5d5d');
   noStroke();
 
+  fill('#b34343');
+  beginShape();
+  vertex(width / 2, 0);
+  vertex(width / 2 + body.x * 2, height / 2 + 100);
+  vertex(width / 2, height);
+  vertex(width, height);
+  vertex(width, 0);
+  endShape();
+
+
   drawEye(leftEye);
   drawEye(rightEye);
 
@@ -100,5 +120,19 @@ function draw() {
   } else {
     openEye(leftEye);
     openEye(rightEye);
+  }
+
+  if (keyIsPressed) {
+    if (keyCode === LEFT_ARROW && body.x > -40) {
+      body.x -= 10;
+    } else if (keyCode === RIGHT_ARROW && body.x < 40) {
+      body.x += 10;
+    }
+  } else {
+    if (body.x > 0) {
+      body.x -= 1;
+    } else if (body.x < 0) {
+      body.x += 1;
+    }
   }
 }

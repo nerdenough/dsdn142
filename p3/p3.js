@@ -1,22 +1,17 @@
 /**
  * Brendan Goodenough
- * Project 3 - The Cats in the Cradle
- *
- * I am attempting to complete this project using primarily Functional
- * Programming, hence some syntax might seem a bit inefficient for
- * creating basic structures.
- *
- * Ironically, Functional Programming revolves around the absence of side
- * effects, yet a Newton's Cradle is a literal visualisation of side effects.
- * In a weird way that seems rather fitting.
+ * Project 3 - Eyes
  */
 
-let leftEye, rightEye;
+let leftEye;
+let rightEye;
 
 function createEye(x, y) {
   return {
-    loc: { x, y },
-    rot: 0
+    x,
+    y,
+    theta: 0,
+    size: 150
   };
 }
 
@@ -32,42 +27,58 @@ function setup() {
   smooth();
 }
 
-function calcDist(a, b) {
-  return Math.abs(a - b);
+function calcDist(x1, y1, x2, y2) {
+  const xSquared = Math.pow(Math.abs(x1 - x2), 2);
+  const ySquared = Math.pow(Math.abs(y1 - y2), 2);
+  return Math.sqrt(xSquared + ySquared);
 }
 
 function drawPupil(eye) {
-  const x = eye.loc.x;
-  const y = eye.loc.y;
-
   // https://p5js.org/reference/#/p5/atan2
-  const theta = atan2(mouseY - y, mouseX - x);
+  const theta = atan2(mouseY - eye.y, mouseX - eye.x);
+  const dist = calcDist(eye.x, eye.y, mouseX, mouseY);
 
   rotate(theta);
-  translate(20, 0);
+  translate(dist < 20 ? dist : 20, 0);
 
   fill(0);
   ellipse(0, 0, 30);
 }
 
-function drawEye(eye) {
-  push();
-  translate(eye.loc.x, eye.loc.y);
+function drawEyelid(eye) {
   fill(0);
   ellipse(0, 0, 150);
   fill(255);
   ellipse(0, 0, 150, 80);
+}
+
+function drawEye(eye) {
+  push();
+  translate(eye.x, eye.y);
+  drawEyelid(eye);
   drawPupil(eye);
   pop();
+}
+
+function checkBounds(eye) {
+  const origin = eye.size / 2;
+  const x1 = eye.x + eye.size - origin > mouseX;
+  const x2 = eye.x - origin < mouseX;
+  const y1 = eye.y + eye.size - origin > mouseY;
+  const y2 = eye.y - origin < mouseY;
+
+  return x1 && x2 && y1 && y2;
 }
 
 function draw() {
   clear();
   background('#fb5d5d');
+
   drawEye(leftEye);
   drawEye(rightEye);
-}
 
-function mouseClicked() {
-  // TODO: Change pendulum colours
+  if (mouseIsPressed) {
+    const leftEyePressed = checkBounds(leftEye);
+    const rightEyePressed = checkBounds(rightEye);
+  }
 }

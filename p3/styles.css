@@ -5,6 +5,7 @@ body {
   color: white;
   background: #101010;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .container {

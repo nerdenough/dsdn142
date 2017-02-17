@@ -8,6 +8,8 @@ let rightEye;
 let body;
 let blinking = false;
 let prevFrameCount = 0;
+let reversed;
+let prevMillis = 0;
 
 function createEye(x, y) {
   return {
@@ -142,10 +144,15 @@ function draw() {
       body.x += 10;
     }
   } else {
-    if (body.x > 0) {
-      body.x -= 1;
-    } else if (body.x < 0) {
-      body.x += 1;
+    if (reversed) {
+      body.x -= 2;
+    } else {
+      body.x += 2;
+    }
+
+    if (millis() > prevMillis + 1000) {
+      reversed = !reversed;
+      prevMillis = millis() + 1000;
     }
   }
 }

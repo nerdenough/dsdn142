@@ -11,7 +11,7 @@ let prevFrameCount = 0;
 let reversed;
 let prevMillis = 0;
 let frame = 0;
-let recording = true; // Set to true to record an image sequence
+let recording = false; // Set to true to record an image sequence
 
 /**
  * Creates an eye at a given position.

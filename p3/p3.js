@@ -6,6 +6,8 @@
 let leftEye;
 let rightEye;
 let body;
+let blinking = false;
+let prevFrameCount = 0;
 
 function createEye(x, y) {
   return {
@@ -22,6 +24,7 @@ function setup() {
   // Injects the canvas into a specific container
   const canvas = createCanvas(1280, 720);
   canvas.parent('canvas');
+  frameRate(25);
 
   leftEye = createEye(width / 2 - 200, height / 2 - 100);
   rightEye = createEye(width / 2 + 200, height / 2 - 100);
@@ -83,13 +86,15 @@ function checkBounds(eye) {
 
 function closeEye(eye) {
   if (eye.eyelidHeight > 0) {
-    eye.eyelidHeight = eye.eyelidHeight < 0 ? 0 : eye.eyelidHeight - 20;
+    eye.eyelidHeight -= 40;
+  } else {
+    blinking = false;
   }
 }
 
 function openEye(eye) {
-  if (eye.eyelidHeight <= 80) {
-    eye.eyelidHeight = eye.eyelidHeight > 80 ? 80 : eye.eyelidHeight + 20;
+  if (eye.eyelidHeight <= 40) {
+    eye.eyelidHeight = eye.eyelidHeight > 80 ? 80 : eye.eyelidHeight + 40;
   }
 }
 
@@ -111,12 +116,20 @@ function draw() {
   drawEye(leftEye);
   drawEye(rightEye);
 
+  if (frameCount - prevFrameCount > Math.random() * (1000 - 50) + 50) {
+    prevFrameCount = frameCount;
+    blinking = true;
+  }
+
   if (mouseIsPressed) {
     const leftEyePressed = checkBounds(leftEye);
     const rightEyePressed = checkBounds(rightEye);
 
     leftEyePressed && closeEye(leftEye);
     rightEyePressed && closeEye(rightEye);
+  } else if (blinking) {
+    closeEye(leftEye);
+    closeEye(rightEye);
   } else {
     openEye(leftEye);
     openEye(rightEye);

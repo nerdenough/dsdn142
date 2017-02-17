@@ -11,11 +11,22 @@
  const frames = 100;
  let landing = false;
 
+ let capture;
+ let recording = false;
+ let c;
+ let gif;
+
  function setup() {
   // https://github.com/processing/p5.js/wiki/Beyond-the-canvas
   // Injects the canvas into a specific container
-  const canvas = createCanvas(300, 300);
-  canvas.parent('canvas');
+  c = createCanvas(300, 300);
+  c.parent('canvas');
+  frameRate(60);
+
+  capture = createCapture(VIDEO);
+  capture.size(300, 300);
+  capture.hide();
+  setupGif();
 
   rocket.push(loadImage('rocket1.png'));
   rocket.push(loadImage('rocket2.png'));
@@ -33,6 +44,7 @@ function draw() {
     landing = true;
   }
 
+  // Determine rocket offset
   if (!landing && dy < -50) {
     dy -= velY;
     velY -= 0.1;
@@ -53,9 +65,11 @@ function draw() {
     }
   }
 
+  // Move rocket
   translate(width / 2, height / 2 - 18 + dy);
   scale(4);
 
+  // Draw different frames depending on rocket position
   if (dy < -50) {
     image(rocket[3], -12, 0);
   } else if (dy < -20) {
@@ -65,4 +79,29 @@ function draw() {
   } else {
     image(rocket[0], -12, 0);
   }
+
+  image(capture, 0, 0, 300, 300);
+
+  if (recording && frameCount % 3 === 0) {
+    gif.addFrame(c.elt, { delay: 1, copy: true });
+  }
+}
+
+function mousePressed() {
+  recording = !recording;
+  if (!recording) {
+    gif.render();
+  }
+}
+
+function setupGif() {
+  gif = new GIF({
+    workers: 2,
+    quality: 40
+  });
+
+  gif.on('finished', function(blob) {
+    window.open(URL.createObjectURL(blob));
+    setupGif();
+  });
 }
